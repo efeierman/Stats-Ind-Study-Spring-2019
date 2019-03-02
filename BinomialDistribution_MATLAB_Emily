@@ -70,7 +70,7 @@
   newData = data(:,2:end);
   xs = [0:5];
   
-  % experiment 1
+  % Empirical data/predicted binomial for each experiment
   for i = 1:6
   
     N = sum(newData(i,:));
@@ -89,6 +89,10 @@
       end
     
     plot(xs+0.5, binomialCounts./sum(binomialCounts), 'ro-', 'MarkerFaceColor', 'r', 'LineWidth', 2);
-
+    
+    % Empirical data/predicted poisson for each experiment
+    predictedPoiss = poisspdf(xs,m) 
+    plot(xs+0.5, predictedPoiss, 'bo-', 'MarkerFaceColor', 'b', 'LineWidth', 2);
+    
   end
    
