@@ -1,0 +1,94 @@
+% Binomial distribution - Canvas exercises
+ 
+% Exercise 1
+ 
+  probsQ1 = binopdf(0:10,10,0.2)   % array of probabilities of observing 0-10 quanta released for Pr=0.2
+
+  % Graph of probabilities
+  plot(0:1:10,probsQ1)
+  hold on
+  xlabel('# quanta released')
+  ylabel('Probability')
+  hold off
+
+% Exercise 2
+
+  deciles = [0:0.1:1.0];            % array of deciles
+  
+  probsQ2 = binopdf(8,14,deciles); % array of probabilities of observing 8 quanta released for each decile of Pr
+  probsQ2(deciles==0.1)            % probability of 8 quanta released if Pr = 0.1
+  probsQ2(deciles==0.7)            % probability of 8 quanta released if Pr = 0.7
+  deciles(probsQ2==max(probsQ2))   % returns most likely probability decile given measurement
+  
+  % Graph of probabilities
+    plot(deciles+.05,probsQ2)
+    hold on
+    xlabel('Probability of Release')
+    ylabel('Probability')
+    hold off
+
+% Exercise 3
+  
+  xQ3 = 8+5;                          % observed quanta
+  nQ3 = 14+14;                        % possible quanta
+  probsQ3 = binopdf(xQ3,nQ3,deciles); % array of probabilities of observing 13 quanta released for each decile of Pr
+  probsQ3(deciles==0.1)               % probability of 13 quanta released if Pr = 0.1
+  deciles(probsQ3==max(probsQ3))      % returns most likely probability decile given measurements
+  
+  % Graph of probabilities
+    plot(deciles+.05,probsQ3)
+    hold on
+    xlabel('Probability of Release')
+    ylabel('Probability')
+    hold off
+ 
+% Exercise 4
+
+  dataQ4 = [0:14;0 0 3 10 19 26 16 16 5 5 0 0 0 0 0];  % recreate data table from exercise4
+  xQ4 = sum(dataQ4(1,:).*dataQ4(2,:));                 % total quanta released
+  nQ4 = sum(dataQ4(2,:))*14;                           % total possible quanta released
+  probsQ4 = binopdf(xQ4, nQ4, deciles);                % array of probabilities of observing xQ4 quanta released for each decile of Pr
+  deciles(probsQ4==max(probsQ4))                       % returns most likely probability decile given measurement
+  
+  phat = binofit(xQ4,nQ4)   % fitting procedure to find most likely Pr
+  
+% Exercise 5
+  
+  probsQ5 = binopdf(7,14,deciles);     % array of probabilities of observing 7 quanta released for each decile of Pr
+  deciles(probsQ5==max(probsQ5))       % returns most likely probability decile given measurement
+  binopdf(7,14,0.3)                    % probability of 7 quanta released if Pr = 0.3 (ie. null hypothesis is true)
+ 
+% Bonus Exercise
+
+  data = [4.0	615	206	33	2	0	0;
+  3.5	604	339	94	11	2	0;
+  0.0	332	126	21	1	0	0;
+  2.0	573	443	154	28	2	0;
+  6.5	172	176	89	12	1	0;
+  3.0	80	224	200	32	4	0;]
+
+  newData = data(:,2:end);
+  xs = [0:5];
+  
+  % experiment 1
+  for i = 1:6
+  
+    N = sum(newData(i,:));
+    m = sum(newData(i,:).*xs)/N;
+    v = sum(((xs-m).^2).*newData(i,:))/(N-1);
+    p = 1 - (v/m);
+    n = m/p;
+    
+    subplot(1,6,i); cla reset; hold on;
+    bar(xs+0.5, newData(i,:)/N, 'FaceColor', 'k');
+    
+    binomialCounts = zeros(size(xs));
+    binomialCounts(1) = N.*(1-p).^n;   
+      for jj = 2:length(binomialCounts)
+         binomialCounts(jj) = binomialCounts(jj-1).*(m-p.*(jj-2))/((jj-1).*(1-p));
+      end
+    
+    plot(xs+0.5, binomialCounts./sum(binomialCounts), 'ro-', 'MarkerFaceColor', 'r', 'LineWidth', 2);
+
+  end
+   
