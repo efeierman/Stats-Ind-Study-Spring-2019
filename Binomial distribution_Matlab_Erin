@@ -1,81 +1,85 @@
->> %Exercise 1
->> n = 10; %number of available quanta
->> p = 0.2; %probability of release
->> k = 0:10; %possible number of release events
->> prob = binopdf(k,n,p) %probabilities of obtaining k release events
+%Exercise 1
+n = 10; %number of available quanta
+p = 0.2; %probability of release
+k = 0:10; %possible number of release events
+prob = binopdf(k,n,p) %probabilities of obtaining k release events
 
->> %Exercise 2
->> n = 14; %number of quanta available for release
->> k = 8; %number of quanta released
->> p = 0:0.1:1 %array of release probabilities from 0 to 1
->> probs = binopdf(k,n,p); %probabilities of obtaining k under probabilities of release from 0-1
->> %The p value is the highest when p = 0.6, therefore this is the most likely release probability
->>%Alternatively, could calculate one at a time
->> prob01 = binopdf(k,n,0.1); %probability of obtaining k if probability of release was 0.1
->> prob02 = binopdf(k,n,0.2); %probability of obtaining k if probability of release was 0.2
->> prob03 = binopdf(k,n,0.3); %probability of obtaining k if probability of release was 0.3
->> prob04 = binopdf(k,n,0.4); %probability of obtaining k if probability of release was 0.4
->> prob05 = binopdf(k,n,0.5); %probability of obtaining k if probability of release was 0.5
->> prob06 = binopdf(k,n,0.6); %probability of obtaining k if probability of release was 0.6
->> prob07 = binopdf(k,n,0.7); %probability of obtaining k if probability of release was 0.7
->> prob08 = binopdf(k,n,0.8); %probability of obtaining k if probability of release was 0.8
->> prob09 = binopdf(k,n,0.9); %probability of obtaining k if probability of release was 0.9
->> prob1 = binopdf(k,n,1); %probability of obtaining k if probability of release was 1.0
+%Exercise 2
+n = 14; %number of quanta available for release
+k = 8; %number of quanta released
+p = 0:0.1:1 %array of release probabilities from 0 to 1
+probs = binopdf(k,n,p); %probabilities of obtaining k under probabilities of release from 0-1
+%The p value is the highest when p = 0.6, therefore this is the most likely release probability
+%Alternatively, could calculate one at a time
+prob01 = binopdf(k,n,0.1); %probability of obtaining k if probability of release was 0.1
+prob02 = binopdf(k,n,0.2); %probability of obtaining k if probability of release was 0.2
+prob03 = binopdf(k,n,0.3); %probability of obtaining k if probability of release was 0.3
+prob04 = binopdf(k,n,0.4); %probability of obtaining k if probability of release was 0.4
+prob05 = binopdf(k,n,0.5); %probability of obtaining k if probability of release was 0.5
+prob06 = binopdf(k,n,0.6); %probability of obtaining k if probability of release was 0.6
+prob07 = binopdf(k,n,0.7); %probability of obtaining k if probability of release was 0.7
+prob08 = binopdf(k,n,0.8); %probability of obtaining k if probability of release was 0.8
+prob09 = binopdf(k,n,0.9); %probability of obtaining k if probability of release was 0.9
+prob1 = binopdf(k,n,1); %probability of obtaining k if probability of release was 1.0
 
->> %Exercise 3
->> n = 14+14; %number of quanta availble for release
->> k = 8+5; %number of quanta released
->> prob01 = binopdf(k,n,0.1); %probability that we would have observd 8 and 5 release events if the release probability was 0.1
->> multprob = 0:0.1:1; %array of probabilities 
->> probs = binopdf(k,n,multprob) %probabilities of observation given probability of release ranging from 0 to 1
->>multprob(probs==max(probs)) %most likely release probability
->>0.5 is the most likely release probability
+%Exercise 3
+n = 14+14; %number of quanta availble for release
+k = 8+5; %number of quanta released
+prob01 = binopdf(k,n,0.1); %probability that we would have observd 8 and 5 release events if the release probability was 0.1
+multprob = 0:0.1:1; %array of probabilities 
+probs = binopdf(k,n,multprob) %probabilities of observation given probability of release ranging from 0 to 1
+multprob(probs==max(probs)) %most likely release probability
+0.5 is the most likely release probability
 
->> %Exercise 4
->> measuredreleases = [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14]; 
->> counts = [0 0 3 10 19 26 16 16 5 5 0 0 0 0 0];
->> multprob = 0:0.1:1; %array of probabilities
->> N = sum(counts); %total observed release events 
->> probs = binopdf(sum(counts.*measuredreleases), N*14, multprob) %probabilities of obtaining observed releases for different probabilities of release
+%Exercise 4
+measuredreleases = [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14]; 
+counts = [0 0 3 10 19 26 16 16 5 5 0 0 0 0 0];
+multprob = 0:0.1:1; %array of probabilities
+N = sum(counts); %total observed release events 
+probs = binopdf(sum(counts.*measuredreleases), N*14, multprob) %probabilities of obtaining observed releases for different probabilities of release
 %N*14 is the total number of possible releases given the number of available quanta
->> multprob(probs==max(probs)) %highest likelihood probability of release
+multprob(probs==max(probs)) %highest likelihood probability of release
 %0.4 is the most likely release probability
->>%Use a fitting procedure to find the best-fitting value of p to three decimal places
+%Use a fitting procedure to find the best-fitting value of p to three decimal places
 
->> %Exercise 5
->> Ho = 0.3; %null hypothesis - temperature change does not affect release probability
->> n = 14; %number of available quanta
->> k = 7; %number of observed releases
->> prob03 = binopdf(k,n,Ho) %probability of observation if null was true
->> multprob = 0:0.1:1; %array of probabilities
->> probs = binopdf(k,n,multprob); %probabilities of obtaining k release events under different release probability values
->> multprob(probs==max(probs)) %most likely probability of release
->>%0.5 is the most likely probability of release
->>%under the null hypothesis, binopdf(k,n,0.3)=0.0618. Since p>0.05, we cannot conclude that temperature had an effect. 
+%Exercise 5
+Ho = 0.3; %null hypothesis - temperature change does not affect release probability
+n = 14; %number of available quanta
+k = 7; %number of observed releases
+prob03 = binopdf(k,n,Ho) %probability of observation if null was true
+multprob = 0:0.1:1; %array of probabilities
+probs = binopdf(k,n,multprob); %probabilities of obtaining k release events under different release probability values
+multprob(probs==max(probs)) %most likely probability of release
+%0.5 is the most likely probability of release
+%under the null hypothesis, binopdf(k,n,0.3)=0.0618. Since p>0.05, we cannot conclude that temperature had an effect. 
 
->>%Bonus
->>%reproduce data table
->> data = [ 
+%Bonus
+%reproduce data table
+data = [ 
    4.0 615 206 33 2 0 0; 
    3.5 604 339 94 11 2 0; 
    0.0 332 126 21 1 0 0; 
    2.0 573 443 154 28 2 0; 
    6.5 172 176 89 12 1 0; 
    3.0 80 224 200 32 4 0];
->> xs = 0:5; %x-axis (i.e. number of release events)
->> newData = data(:,2:7); %data of release events
->> num_sessions = size(data,1); %number of temperature manipulations
-
->>%For trial at temperature 4.0
->> N = sum(newData(1,:)); %release events
->> m = sum(newData(1,:).*xs)/N; %mean 
->> xsmean = (xs-m).^2;
->> v = sum(newData(1,:).*xsmean)/(N-1); %variance
->> p = 1-(v/m) %release probability
->> n = m/p %number of available quanta per trial
->> binomialCounts = zeros(size(xs))
->> binomialCounts(1) = N.*(1-p)^n
->> jj = 2:length(binomialCounts)
->> binomialCounts(jj) = binomialCounts(jj-1).*(m-p.*(jj-2))/((jj-1).*(1-p))
->> binomialCounts = round(binomialCounts)
->>%stopped halfway through bonus -- will continue later 
+xs = [0:5]; %x-axis (i.e. number of release events)
+newData = data(:,2:7); %data of release events
+num_sessions = size(data,1); %number of temperature manipulations
+for i = 1:6
+N = sum(newData(i,:)); %release events
+m = sum(newData(i,:).*xs)/N; %mean 
+xsmean = (xs-m).^2;
+v = sum(newData(i,:).*xsmean)/(N-1); %variance
+p = 1-(v/m); %release probability
+n = m/p; %number of available quanta per trial
+subplot(1,6,i); cla reset; hold on;
+bar(xs+0.5, newData(i,:)/N, 'FaceColor', 'k');
+binomialCounts = zeros(size(xs));
+binomialCounts(1) = N.*(1-p).^n;
+for jj = 2:length(binomialCounts)
+binomialCounts (jj) = binomialCounts(jj-1).*(m-p.*(jj-2))/((jj-1).*(1-p));
+end
+plot(xs+0.5, binomialCounts./sum(binomialCounts), 'ro-', 'MarkerFaceColor', 'r', 'LineWidth', 2);
+predictedPoiss = poisspdf(xs,m)
+plot(xs+0.5, predictedPoiss, 'bo-', 'MarkerFaceColor', 'b', 'LineWidth', 2)
+end
