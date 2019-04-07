@@ -1,0 +1,53 @@
+%Bootstrap versus SEM
+
+%start with a data set of 1k points taken from a normal distribution
+mu = 10;
+sigma = 5;
+N = 1000;
+
+originalData = normrnd(mu,sigma,N,1);
+
+%mean of data set 
+originalMean = mean(originalData)
+
+%SEM of data set
+originalSEM = (std(originalData)/sqrt(length(originalData)))
+
+%Mean +/- SEM
+meanPlusSEM = originalMean + originalSEM
+meanMinusSEM = originalMean - originalSEM
+
+%Print results
+disp(sprintf('SEM interval is between %.2d and %.2d', meanMinusSEM, meanPlusSEM))
+
+%Hitogram of data
+hist(data)
+
+
+%Bootstrapping
+%we want to generate 1k different samples with 1k points that are
+%randomly selected from our original distribution of 1k points 
+%then find the means from those samples, then sort the means in order (from
+%smallest to largest)
+%the bounds of this confidence interval will be bound by the 25th and 975th
+%value (middle 95% of values) 
+
+sampledMeans = zeros(1000,1);
+
+for ii = 1:length(sampledMeans)
+    sampledData = datasample(originalData,1000);
+    sampledMeans(ii) = mean(sampledData);
+end
+
+%Histogram of bootstrapped samples means 
+hold on
+hist(sampledMeans)
+
+% calculate 95% confidence interval 
+sort(sampledMeans);
+lowerBoundCI = sampledMeans(25)
+upperBoundCI = sampledMeans(975)
+
+%Print results 
+disp(sprintf('95 percent confidence interval is between %.2d and %.2d', lowerBoundCI, upperBoundCI))
+
